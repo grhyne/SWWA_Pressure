@@ -17,7 +17,7 @@ library(readxl)
 debug <- T
 
 # Define the geolocator data logger id to use
-gdl <- "CB624"
+gdl <- "CB594"
 
 # Read its information from gpr_settings.xlsx
 gpr <- read_excel("data/gpr_settings.xlsx") %>%
