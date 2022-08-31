@@ -7,8 +7,8 @@ gdl <- "CB594"
 load(paste0("data/3_static/", gdl, "_static_prob.Rdata"))
 
 # Set credential
-# Sys.setenv( cds.key="Insert_your_CDS_API_KEY_here")
-# Sys.setenv( cds.user="Insert_your_CDS_UID_here")
+# Sys.setenv( cds.key="")
+# Sys.setenv( cds.user="")
 cds.key <- Sys.getenv("cds.key")
 cds.user <- Sys.getenv("cds.user")
 wf_set_key(user = cds.user, key = cds.key, service = "cds")

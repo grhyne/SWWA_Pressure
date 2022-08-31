@@ -4,7 +4,7 @@ library(leaflet.extras)
 library(raster)
 library(igraph)
 
-debug <- T
+debug <- F
 
 # Define which track to work with
 gdl <- "CB594"

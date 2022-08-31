@@ -18,7 +18,7 @@ gdl <- "CB594"
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
 # load(paste0("data/2_light/", gdl, "_light_prob.Rdata"))
 
-# Defint the threashold of the stationay period to consider
+# Define the threashold of the stationary period to consider
 thr_sta_dur <- gpr$thr_dur # in hours
 
 sta_pres <- unlist(lapply(pressure_prob, function(x) raster::metadata(x)$sta_id))
@@ -103,7 +103,7 @@ if (!is.na(gpr$calib_2_start)) {
 
 
 
-# Get pressure timeserie at the best match of static
+# Get pressure timeseries at the best match of static
 path <- geopressure_map2path(static_prob)
 static_timeserie <- geopressure_ts_path(path, pam$pressure)
 
