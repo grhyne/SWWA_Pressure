@@ -20,7 +20,6 @@ library(ggplot2)
 library(plotly)
 knitr::opts_chunk$set(echo = FALSE)
 load(paste0("../data/1_pressure//", params$gdl_id, "_pressure_prob.Rdata"))
-load(paste0("../data/2_light/", params$gdl_id, "_light_prob.Rdata"))
 load(paste0("../data/3_static/", params$gdl_id, "_static_prob.Rdata"))
 # load(paste0("../data/4_basic_graph/", params$gdl_id, "_basic_graph.Rdata"))
 load(paste0("../data/5_wind_graph/", params$gdl_id, "_wind_graph.Rdata"))
@@ -39,7 +38,7 @@ p <- ggplot() +
   # geom_line(data = pam$pressure, aes(x = date, y = obs), colour = "grey") +
   geom_line(data = do.call("rbind", shortest_path_timeserie), aes(x = date, y = altitude)) +
   geom_line(data = do.call("rbind", shortest_path_timeserie) %>% filter(sta_id > 0), aes(x = date, y = altitude, col = factor(sta_id))) +
-  geom_vline(data = twl, aes(xintercept = twilight, linetype = ifelse(rise, "dashed", "solid"), color="grey"), lwd=0.1) +
+  # geom_vline(data = twl, aes(xintercept = twilight, linetype = ifelse(rise, "dashed", "solid"), color="grey"), lwd=0.1) +
   theme_bw() +
   scale_colour_manual(values = col) +
   scale_y_continuous(name = "Altitude (m)")
