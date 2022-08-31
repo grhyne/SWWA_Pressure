@@ -1,6 +1,6 @@
 
 # Currently only work using this branch
-devtools::install_github("Rafnuss/GeoPressureR@v3.1.0")
+# devtools::install_github("Rafnuss/GeoPressureR@v3.1.0")
 
 library(GeoPressureR)
 library(leaflet)
@@ -14,7 +14,7 @@ library(raster)
 library(readxl)
 
 # Set debug T to see all check and set to F once everything is correct
-debug <- T
+debug <- F
 
 # Define the geolocator data logger id to use
 gdl <- "CB594"
@@ -31,7 +31,8 @@ pam <- pam_read(
   pressure_file = "*.deg",
   light_file = "*.lux",
   crop_start = gpr$crop_start,
-  crop_end = gpr$crop_end
+  crop_end = gpr$crop_end,
+  id = "basename"
 )
 
 # Generate fake acceleration data
@@ -162,7 +163,7 @@ if (debug) {
 
 # Save ----
 save(
-  pressure_timeserie, # can be removed in not in debug mode
+  # pressure_timeserie, # can be removed in not in debug mode
   pressure_prob,
   pam,
   gpr,

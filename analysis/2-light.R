@@ -15,7 +15,7 @@ setupGeolocation()
 debug <- T
 
 # Define the geolocator data logger id to use
-gdl <- "18LX"
+gdl <- "CB594"
 
 # Load the pressure file, also contains gpr, pam, col
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
@@ -32,8 +32,39 @@ while (!is.POSIXct(gpr$calib_1_start) | is.na(gpr$calib_1_start)) {
     filter(gpr$gdl_id == gdl_id)
 }
 
+## Modification of the light data to make is easier to detect twilight
+# Keep original value
+pam$light$obs0 = pam$light$obs
+
+# Optional log transform
+# pam$light$obs  <- log(pam$light$obs+0.0001) + abs(min(log(pam$light$obs+0.0001)))
+
+# Seems like there was an issue for this tag. Need to check for each species. should add a column to gpr_settings.xlsx with this date
+stopifnot(gdl == "CB594")
+pam$light$obs[pam$light$date < as.POSIXct("2021-6-22", tz = "UTC")] <- NA
+
+# Remove the mean trend
+n <- 2*48
+pam$light$obs_smooth <- stats::filter(pam$light$obs, rep(1 / n, n), sides = 2)
+pam$light$obs = pam$light$obs - pam$light$obs_smooth
+
+pam$light %>% ggplot() +
+  geom_line(aes(x = date, y = obs0), col = "grey") +
+  geom_line(aes(x = date, y = obs_smooth), col = "red") +
+  geom_line(aes(x = date, y = obs), col = "blue") +
+  theme_bw()
+
+# Manual check shift_k
+mat <- light2mat(pam$light, shift_k=-6*60*60) # shift_k should be added to gpr_setting
+image(t(mat$obs))
+
+stop("Reest of code does not work. In my opinion, there is not much to gain from this.")
+
 # Compute twilight
-twl <- find_twilights(pam$light, shift_k = gpr$shift_k)
+twl <- find_twilights(pam$light, threshold = 0, shift_k=-6*60*60)
+
+
+
 
 if (debug) {
   # convert to geolight format for ploting
