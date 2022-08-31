@@ -1,7 +1,7 @@
 library(GeoPressureR)
 
 # Define which track to work with
-gdl <- "18LX"
+gdl <- "CB594"
 
 # Load
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
@@ -14,9 +14,9 @@ grl <- graph_create(static_prob,
 )
 
 # Add wind
-filename <- paste0("data/5_wind_graph/", gdl, "/", gdl, "_")
 grl <- graph_add_wind(grl,
-  pressure = pam$pressure, filename,
+  pressure = pam$pressure,
+  filename = paste0("data/5_wind_graph/", gdl, "/", gdl, "_"),
   thr_as = gpr$thr_as
 )
 

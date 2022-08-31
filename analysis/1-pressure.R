@@ -1,3 +1,7 @@
+
+# Currently only work using this branch
+# devtools::install_github("Rafnuss/GeoPressureR@v3.1.0")
+
 library(GeoPressureR)
 library(leaflet)
 library(leaflet.providers)
@@ -10,10 +14,10 @@ library(raster)
 library(readxl)
 
 # Set debug T to see all check and set to F once everything is correct
-debug <- T
+debug <- F
 
 # Define the geolocator data logger id to use
-gdl <- "18LX"
+gdl <- "CB594"
 
 # Read its information from gpr_settings.xlsx
 gpr <- read_excel("data/gpr_settings.xlsx") %>%
@@ -22,14 +26,23 @@ gpr <- read_excel("data/gpr_settings.xlsx") %>%
 # assert gdl in setting
 
 # Read, classify and label ----
-pam <- pam_read(paste0("data/0_PAM/", gpr$gdl_id),
+pam <- pam_read(
+  paste0("data/0_PAM/", gpr$gdl_id),
+  pressure_file = "*.deg",
+  light_file = "*.lux",
   crop_start = gpr$crop_start,
-  crop_end = gpr$crop_end
+  crop_end = gpr$crop_end,
+  id = "basename"
 )
+
+# Generate fake acceleration data
+pam$acceleration = pam$pressure
+pam$acceleration$obs = 0
+pam$acceleration$ismig = FALSE
 
 # Auto classification + writing, only done the first time
 if (!file.exists(paste0("data/1_pressure/labels/", gpr$gdl_id, "_act_pres-labeled.csv"))) {
-  pam <- pam_classify(pam)
+  # pam <- pam_classify(pam)
   trainset_write(pam, "data/1_pressure/labels/")
   browseURL("https://trainset.geocene.com/")
   invisible(readline(prompt = paste0(
@@ -59,7 +72,6 @@ if (debug) {
     filter(duration < 3) %>%
     arrange(duration)
 
-
   # Test 2 ----
   pressure_na <- pam$pressure %>%
     mutate(obs = ifelse(isoutliar | sta_id == 0, NA, obs))
@@ -67,7 +79,7 @@ if (debug) {
   p <- ggplot() +
     geom_line(data = pam$pressure, aes(x = date, y = obs), col = "grey") +
     geom_line(data = pressure_na, aes(x = date, y = obs, color = factor(sta_id))) +
-    # geom_point(data = subset(pam$pressure, isoutliar), aes(x = date, y = obs), colour = "black") +
+    geom_point(data = subset(pam$pressure, isoutliar), aes(x = date, y = obs), colour = "black") +
     theme_bw() +
     scale_color_manual(values = col) +
     scale_y_continuous(name = "Pressure (hPa)")
@@ -151,7 +163,7 @@ if (debug) {
 
 # Save ----
 save(
-  pressure_timeserie, # can be removed in not in debug mode
+  # pressure_timeserie, # can be removed in not in debug mode
   pressure_prob,
   pam,
   gpr,
