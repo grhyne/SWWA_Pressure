@@ -1,7 +1,7 @@
 library(ecmwfr)
 
 # Define which track to work with
-gdl <- "18LX"
+gdl <- "CB594"
 
 # Load
 load(paste0("data/3_static/", gdl, "_static_prob.Rdata"))
@@ -28,6 +28,10 @@ for (i_s in seq(1, nrow(pam$sta) - 1)) {
   pres_id_min <- sum(!(min(pam$pressure$obs[flight_id]) < possible_pressure))
   pres_id_max <- sum(max(pam$pressure$obs[flight_id]) > possible_pressure) + 1
   flight_pres_id <- seq(pres_id_min, min(pres_id_max, length(possible_pressure)))
+
+  if (length(flight_pres_id)==1){
+    flight_pres_id = flight_pres_id + c(-1,0)
+  }
 
   # Prepare the query
   request <- list(

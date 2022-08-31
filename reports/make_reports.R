@@ -3,7 +3,7 @@ library(rmarkdown)
 library(readxl)
 
 # Define the track to consider
-gdl_list <- c("18LX")
+gdl_list <- c("CB594")
 # set <- read_excel("data/gdl_settings.xlsx")
 # gdl_list = set$gdl_id
 
