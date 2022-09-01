@@ -1,7 +1,7 @@
 ---
 site: distill::distill_website
 params:
-  gdl_id: "18LX"
+  gdl_id: "CB594"
 ---
 ---
 title: `r params$gdl_id`

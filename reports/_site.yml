@@ -1,8 +1,8 @@
-name: "SWWA_Pressure"
+name: "SWWA Connectivity"
 description: |
   SWWA_Pressure
 output_dir: "../docs"
-title: "SWWA_Pressure"
+title: "SWWA Connectivity"
 navbar:
   left:
     - text: "Basic Trajectory"

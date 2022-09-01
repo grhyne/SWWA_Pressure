@@ -1,6 +1,6 @@
 
 # Currently only work using this branch
-# devtools::install_github("Rafnuss/GeoPressureR@v3.1.0")
+ #devtools::install_github("Rafnuss/GeoPressureR@v3.1.0")
 
 library(GeoPressureR)
 library(leaflet)

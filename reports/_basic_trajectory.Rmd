@@ -1,7 +1,7 @@
 ---
 site: distill::distill_website
 params:
-  gdl_id: "18LX"
+  gdl_id: "CB594"
 ---
 ---
 title: `r params$gdl_id`
@@ -86,9 +86,7 @@ for (i_r in seq_len(length(static_prob_marginal))) {
   l <- l %>%
     addRasterImage(static_prob_marginal[[i_r]], colors = "OrRd", opacity = 0.8, group = info_str)
 }
-l %>%
-  addPolylines(lng = shortest_path$lon, lat = shortest_path$lat, opacity = .5, color = "#808080", weight = 3) %>%
-  addCircles(lng = shortest_path$lon, lat = shortest_path$lat, opacity = .4, weight = sta_duration^(0.3) * 10, popup = paste0("sta_id=", shortest_path$sta_id), color = "#000") %>%
+l  %>%
   addLayersControl(
     overlayGroups = li_s,
     options = layersControlOptions(collapsed = FALSE)

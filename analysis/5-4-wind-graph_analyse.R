@@ -7,7 +7,7 @@ library(igraph)
 # Define which track to work with
 gdl <- "CB594"
 
-debug <- T
+debug <- F
 
 # Load
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
