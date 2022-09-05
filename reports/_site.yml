@@ -19,9 +19,9 @@ navbar:
           href: "/SWWA_Pressure/technical_details/CB594.html"
   right:
     - icon: fa-envelope fa-lg
-      href: mailto:<rafnuss@gmail.com>
+      href: mailto:<grhyne1@lsu.edu>
     - icon: fa-github fa-lg
-      href: https://github.com/Rafnuss/SWWA_Pressure
+      href: https://github.com/grhyne/SWWA_Pressure
 
 output:
   distill::distill_article:
