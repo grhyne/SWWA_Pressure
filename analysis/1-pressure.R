@@ -17,7 +17,7 @@ library(readxl)
 debug <- F
 
 # Define the geolocator data logger id to use
-gdl <- "CB599"
+gdl <- "CB598"
 
 # Read its information from gpr_settings.xlsx
 gpr <- read_excel("data/gpr_settings.xlsx") %>%
@@ -169,3 +169,22 @@ save(
   gpr,
   file = paste0("data/1_pressure/", gpr$gdl_id, "_pressure_prob.Rdata")
 )
+
+#View the pressure map
+li_s <- list()
+l <- leaflet(width = "100%") %>%
+  addProviderTiles(providers$Stamen.TerrainBackground) %>%
+  addFullscreenControl()
+for (i_r in seq_len(length(pressure_prob))) {
+  i_s <- metadata(pressure_prob[[i_r]])$sta_id
+  info <- pam$sta[pam$sta$sta_id == i_s, ]
+  info_str <- paste0(i_s, " | ", format(info$start, "%d-%b %H:%M"), "->", format(info$end, "%d-%b %H:%M"))
+  li_s <- append(li_s, info_str)
+  l <- l %>% addRasterImage(pressure_prob[[i_r]], opacity = 0.8, colors = "OrRd", group = info_str)
+}
+l %>%
+  addLayersControl(
+    overlayGroups = li_s,
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  hideGroup(tail(li_s, length(li_s) - 1))

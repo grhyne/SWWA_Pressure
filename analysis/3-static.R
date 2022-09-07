@@ -12,7 +12,7 @@ library(readxl)
 debug <- F
 
 # Define the geolocator data logger id to use
-gdl <- "CB599"
+gdl <- "CB616"
 
 # Load the pressure file, also contains set, pam, col
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
@@ -167,3 +167,15 @@ save(pam,
   static_timeserie,
   file = paste0("data/3_static/", gpr$gdl_id, "_static_prob.Rdata")
 )
+
+
+#Geopressureviz Check
+geopressureviz <- list(
+  pam_data = pam,
+  static_prob = static_prob,
+  pressure_prob = pressure_prob,
+  light_prob = pressure_prob,
+  pressure_timeserie = static_timeserie
+)
+save(geopressureviz, file = "~/geopressureviz.RData")
+shiny::runApp(system.file("geopressureviz", package = "GeoPressureR"), launch.browser = getOption("browser"))
