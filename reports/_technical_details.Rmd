@@ -9,7 +9,6 @@ description: |
   Technical details
 ---
 
-
 ```{r setup, message=F}
 library(GeoPressureR)
 library(leaflet)
