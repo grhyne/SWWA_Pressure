@@ -12,7 +12,7 @@ library(readxl)
 debug <- T
 
 # Define the geolocator data logger id to use
-gdl <- "CB606"
+gdl <- "CB620"
 
 # Load the pressure file, also contains set, pam, col
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
@@ -111,7 +111,7 @@ static_timeserie <- geopressure_ts_path(path, pam$pressure)
 if (debug) {
   # GeopressureViz
   geopressureviz <- list(
-    pam_data = pam,
+    pam = pam,
     static_prob = static_prob,
     pressure_prob = pressure_prob,
     # light_prob = light_prob,
@@ -162,16 +162,15 @@ if (debug) {
 }
 
 ## Save ----
-save(pam,
-  static_prob,
-  static_timeserie,
-  file = paste0("data/3_static/", gpr$gdl_id, "_static_prob.Rdata")
+save(static_prob,
+     static_timeserie,
+     file = paste0("data/3_static/", gpr$gdl_id, "_static_prob.Rdata")
 )
 
 
 #Geopressureviz Check
 geopressureviz <- list(
-  pam_data = pam,
+  pam = pam,
   static_prob = static_prob,
   pressure_prob = pressure_prob,
   light_prob = pressure_prob,

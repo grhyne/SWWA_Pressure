@@ -7,7 +7,7 @@ library(igraph)
 debug <- F
 
 # Define which track to work with
-gdl <- "CB616"
+gdl <- "CB620"
 
 # Load static prob
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
@@ -22,7 +22,6 @@ grl <- graph_create(static_prob,
 
 # Add probability of each edge
 grl$p <- grl$ps * flight_prob(grl$gs, method = "gamma", shape = 7, scale = 7, low_speed_fix = gpr$low_speed_fix)
-
 
 
 
@@ -112,7 +111,7 @@ if (debug) {
 
 
   geopressureviz <- list(
-    pam_data = pam,
+    pam = pam,
     static_prob = static_prob,
     static_prob_marginal = static_prob_marginal,
     pressure_prob = pressure_prob,

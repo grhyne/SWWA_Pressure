@@ -1,7 +1,6 @@
 
 # Currently only work using this branch
-# devtools::install_github("Rafnuss/GeoPressureR@v3.1.0")
-
+ devtools::install_github("Rafnuss/GeoPressureR")
 library(GeoPressureR)
 library(leaflet)
 library(leaflet.providers)
@@ -14,7 +13,7 @@ library(raster)
 library(readxl)
 
 # Set debug T to see all check and set to F once everything is correct
-debug <- T
+debug <- F
 
 # Define the geolocator data logger id to use
 gdl <- "CB620"
@@ -74,12 +73,12 @@ if (debug) {
 
   # Test 2 ----
   pressure_na <- pam$pressure %>%
-    mutate(obs = ifelse(isoutliar | sta_id == 0, NA, obs))
+    mutate(obs = ifelse(isoutlier | sta_id == 0, NA, obs))
 
   p <- ggplot() +
     geom_line(data = pam$pressure, aes(x = date, y = obs), col = "grey") +
     geom_line(data = pressure_na, aes(x = date, y = obs, color = factor(sta_id))) +
-    geom_point(data = subset(pam$pressure, isoutliar), aes(x = date, y = obs), colour = "black") +
+    geom_point(data = subset(pam$pressure, isoutlier), aes(x = date, y = obs), colour = "black") +
     theme_bw() +
     scale_color_manual(values = col) +
     scale_y_continuous(name = "Pressure (hPa)")
@@ -92,7 +91,7 @@ if (debug) {
 thr_dur <- gpr$thr_dur # 24*4 # duration in hour. Decrease this value down to gpr$thr_dur
 res <- as.numeric(difftime(pam$pressure$date[2], pam$pressure$date[1], units = "hours"))
 sta_id_keep <- pam$pressure %>%
-  filter(!isoutliar & sta_id > 0) %>%
+  filter(!isoutlier & sta_id > 0) %>%
   count(sta_id) %>%
   filter(n * res > thr_dur) %>%
   .$sta_id
@@ -127,7 +126,7 @@ if (debug) {
   # Test 3 ----
   p <- ggplot() +
     geom_line(data = pam$pressure, aes(x = date, y = obs), colour = "grey") +
-    # geom_point(data = subset(pam$pressure, isoutliar), aes(x = date, y = obs), colour = "black") +
+    # geom_point(data = subset(pam$pressure, isoutlier), aes(x = date, y = obs), colour = "black") +
     geom_line(data = pressure_na, aes(x = date, y = obs, color = factor(sta_id)), size = 0.5) +
     geom_line(data = do.call("rbind", pressure_timeserie), aes(x = date, y = pressure0, col = factor(sta_id)), linetype = 2) +
     theme_bw() +
@@ -142,7 +141,7 @@ if (debug) {
   for (i_r in seq_len(length(pressure_timeserie))) {
     if (!is.null(pressure_timeserie[[i_r]])) {
       i_s <- unique(pressure_timeserie[[i_r]]$sta_id)
-      df3 <- merge(pressure_timeserie[[i_r]], subset(pam$pressure, !isoutliar & sta_id == i_s), by = "date")
+      df3 <- merge(pressure_timeserie[[i_r]], subset(pam$pressure, !isoutlier & sta_id == i_s), by = "date")
       df3$error <- df3$pressure0 - df3$obs
       hist(df3$error, main = i_s, xlab = "", ylab = "")
       abline(v = 0, col = "red")
