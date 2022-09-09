@@ -1,7 +1,7 @@
 library(GeoPressureR)
 
 # Define which track to work with
-gdl <- "CB616"
+gdl <- "CB620"
 
 # Load
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))

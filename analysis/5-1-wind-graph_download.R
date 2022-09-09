@@ -1,7 +1,7 @@
 library(ecmwfr)
 
 # Define which track to work with
-gdl <- "CB616"
+gdl <- "CB620"
 
 # Load
 load(paste0("data/3_static/", gdl, "_static_prob.Rdata"))
