@@ -17,6 +17,8 @@ navbar:
           href: "/SWWA_Pressure/basic_trajectory/CB624.html"
         - text: "CB627"
           href: "/SWWA_Pressure/basic_trajectory/CB627.html"
+        - text: "CB621"
+          href: "/SWWA_Pressure/basic_trajectory/CB621.html"
     - text: "Coastal Plains"
       menu:
         - text: "CB594"
@@ -37,8 +39,6 @@ navbar:
           href: "/SWWA_Pressure/basic_trajectory/CB619.html"
         - text: "CB620"
           href: "/SWWA_Pressure/basic_trajectory/CB620.html"
-        - text: "CB621"
-          href: "/SWWA_Pressure/basic_trajectory/CB621.html"
 
   right:
     - icon: fa-envelope fa-lg

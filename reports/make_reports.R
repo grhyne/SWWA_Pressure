@@ -9,7 +9,7 @@ gdl_list <- c("CB594","CB596","CB598", "CB599","CB601","CB608","CB611","CB616", 
 # gdl_list = set$gdl_id
 
 # Define the report to produce
-report_list <- c("basic_trajectory", "technical_details")
+report_list <- c("basic_trajectory")
 
 # Generate the following report for each tracks
 # This will produce an HTML file for each report
