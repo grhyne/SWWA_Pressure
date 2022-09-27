@@ -1,11 +1,17 @@
 ---
-title: "SWWA_Pressure"
+title: "SWWA Connectivity"
 description: |
   List of Reports
 site: distill::distill_website
 ---
 
-This is an example of the reports generated based on the [GeoPressureTemplate](https://github.com/Rafnuss/GeoPressureTemplate). You can navigate from this page to all the report generated. 
+This site contains geolocation data of Swainson's Warblers (*Limnothlypis swainsonii*) that comes from a collaborative effort of researchers across the southeastern United States to assess migratory connectivity across breeding populations and characterize their wintering distribution, migratory paths, phenology, and migratory behavior. Multi-sensor geolocators (BARP50Z11-7-DIP, Migrate Technology) were deployed on territorial males in the spring / summer of 2021, and recovered in 2022. Tag data was analyzed implementing the GeoPressureR package [GeoPressureR](https://raphaelnussbaumer.com/GeoPressureManual/index.html), which uses weather reanalysis data (ERA5) to match spatio-temporal patterns of atmospheric pressure across the deployment period, providing a more accurate approach of geolocation than conventional light-level methods.
+
+![Source: Phil Stouffer](C:/Users/Garrett Rhyne/Documents/SWWA_Connectivity/Pictures/SWWA_MainPhoto.jpg)
+
+Each page allows you to explore an individual tag, which can be navigated by breeding region in the top menu bar. For each tag you can find interactive Leaflets and ggplots of the likely and simulated migratory paths, marginal probability heat maps, altitude plots, wind assistance maps, and flight histograms. This code workflow and reports are based on the GeoPressureTemplate.[GeoPressureTemplate](https://github.com/Rafnuss/GeoPressureTemplate).  
+
+## Tag Data
 
 ```{r, results = "asis", echo = FALSE}
 # List all the html file found on in the reports/html folder
@@ -25,3 +31,15 @@ for (i_f_dir in unique(f_dirname)) {
   cat("\n")
 }
 ```
+
+## Contributors  
+
+__Garrett Rhyne__ (*Louisiana State University, School of Renewable Natural Resources*)  
+Philip Stouffer (*Louisiana State University, School of Renewable Natural Resources*)  
+Than Boves (*Arkansas State University, College of Biological Sciences*)  
+Lesley Bulluck (*Virginia Commonwealth University, Center for Environmental Studies*)  
+Ashley Peele (*Virginia Tech, Conservation Management Institute*)  
+David Buehler (*University of Tennessee Knoxville, Ecology & Evolutionary Biology*)  
+Dawson Radar (*University of Tennessee Knoxville, Ecology & Evolutionary Biology*)  
+Jennifer Tyrrell (*Adudubon South Carolina*)  
+Matthew Johnson (*Audubon South Carolina*)  

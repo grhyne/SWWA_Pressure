@@ -88,14 +88,14 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
   <!--radix_placeholder_meta_tags-->
-  <title>SWWA Connectivity: SWWA_Pressure</title>
+  <title>SWWA Connectivity</title>
 
   <meta property="description" itemprop="description" content="List of Reports"/>
 
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="SWWA Connectivity: SWWA_Pressure"/>
+  <meta property="og:title" content="SWWA Connectivity"/>
   <meta property="og:type" content="article"/>
   <meta property="og:description" content="List of Reports"/>
   <meta property="og:locale" content="en_US"/>
@@ -103,14 +103,14 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="SWWA Connectivity: SWWA_Pressure"/>
+  <meta property="twitter:title" content="SWWA Connectivity"/>
   <meta property="twitter:description" content="List of Reports"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","site"]}},"value":[{"type":"character","attributes":{},"value":["SWWA_Pressure"]},{"type":"character","attributes":{},"value":["List of Reports\n"]},{"type":"character","attributes":{},"value":["distill::distill_website"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","site"]}},"value":[{"type":"character","attributes":{},"value":["SWWA Connectivity"]},{"type":"character","attributes":{},"value":["List of Reports\n"]},{"type":"character","attributes":{},"value":["distill::distill_website"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -788,6 +788,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article table.gt_table td,
   d-article table.gt_table th {
     border-bottom: none;
+    font-size: 100%;
   }
 
   .html-widget {
@@ -1860,15 +1861,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
-          var fn = $(this).children()[0]
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
           $(this).html(fn.shadowRoot.querySelector("sup"))
           $(this).id = fn.id
           fn.remove()
         }
         var refs = $(this).attr('data-cites').split(" ");
         var refHtml = refs.map(function(ref) {
-          return "<p>" + $('#ref-' + ref).html() + "</p>";
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
         }).join("\n");
         window.tippy(this, {
           allowHTML: true,
@@ -2087,7 +2094,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"SWWA_Pressure","description":"List of Reports","authors":[]}
+{"title":"SWWA Connectivity","description":"List of Reports","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2164,7 +2171,7 @@ Technical Details
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>SWWA_Pressure</h1>
+<h1>SWWA Connectivity</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
 <p><p>List of Reports</p></p>
@@ -2172,9 +2179,22 @@ Technical Details
 
 
 <div class="d-article">
-<p>This is an example of the reports generated based on the <a
-href="https://github.com/Rafnuss/GeoPressureTemplate">GeoPressureTemplate</a>.
-You can navigate from this page to all the report generated.</p>
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#tag-data" id="toc-tag-data">Tag Data</a></li>
+<li><a href="#contributors" id="toc-contributors">Contributors</a></li>
+</ul>
+</nav>
+</div>
+<p>This site contains geolocation data of Swainson’s Warblers (<em>Limnothlypis swainsonii</em>) that comes from a collaborative effort of researchers across the southeastern United States to assess migratory connectivity across breeding populations and characterize their wintering distribution, migratory paths, phenology, and migratory behavior. Multi-sensor geolocators (BARP50Z11-7-DIP, Migrate Technology) were deployed on territorial males in the spring / summer of 2021, and recovered in 2022. Tag data was analyzed implementing the GeoPressureR package <a href="https://raphaelnussbaumer.com/GeoPressureManual/index.html">GeoPressureR</a>, which uses weather reanalysis data (ERA5) to match spatio-temporal patterns of atmospheric pressure across the deployment period, providing a more accurate approach of geolocation than conventional light-level methods.</p>
+<figure>
+<img src="C:/Users/Garrett%20Rhyne/Documents/SWWA_Connectivity/Pictures/SWWA_MainPhoto.JPG" alt="Source: Phil Stouffer" />
+<figcaption aria-hidden="true">Source: Phil Stouffer</figcaption>
+</figure>
+<p>Each page allows you to explore an individual tag, which can be navigated by breeding region in the top menu bar. For each tag you can find interactive Leaflets and ggplots of the likely and simulated migratory paths, marginal probability heat maps, altitude plots, wind assistance maps, and flight histograms. This code workflow and reports are based on the GeoPressureTemplate.<a href="https://github.com/Rafnuss/GeoPressureTemplate">GeoPressureTemplate</a>.</p>
+<h2 id="tag-data">Tag Data</h2>
 <div class="layout-chunk" data-layout="l-body">
 <details>
 <summary>
@@ -2216,37 +2236,18 @@ Show code
 <li><a href=' basic_trajectory/CB624.html '> CB624 </a></li>
 <li><a href=' basic_trajectory/CB627.html '> CB627 </a></li>
 </ul>
-<h2 id="technical-details">Technical Details</h2>
-<ul>
-<li><a href=' technical_details/CB594.html '> CB594 </a></li>
-<li><a href=' technical_details/CB596.html '> CB596 </a></li>
-<li><a href=' technical_details/CB599.html '> CB599 </a></li>
-<li><a href=' technical_details/CB601.html '> CB601 </a></li>
-<li><a href=' technical_details/CB608.html '> CB608 </a></li>
-<li><a href=' technical_details/CB611.html '> CB611 </a></li>
-<li><a href=' technical_details/CB619.html '> CB619 </a></li>
-<li><a href=' technical_details/CB621.html '> CB621 </a></li>
-<li><a href=' technical_details/CB623.html '> CB623 </a></li>
-<li><a href=' technical_details/CB624.html '> CB624 </a></li>
-<li><a href=' technical_details/CB627.html '> CB627 </a></li>
-</ul>
-<h2 id="wind-trajectory">Wind Trajectory</h2>
-<ul>
-<li><a href=' wind_trajectory/CB594.html '> CB594 </a></li>
-<li><a href=' wind_trajectory/CB596.html '> CB596 </a></li>
-<li><a href=' wind_trajectory/CB599.html '> CB599 </a></li>
-<li><a href=' wind_trajectory/CB601.html '> CB601 </a></li>
-<li><a href=' wind_trajectory/CB608.html '> CB608 </a></li>
-<li><a href=' wind_trajectory/CB611.html '> CB611 </a></li>
-<li><a href=' wind_trajectory/CB619.html '> CB619 </a></li>
-<li><a href=' wind_trajectory/CB621.html '> CB621 </a></li>
-<li><a href=' wind_trajectory/CB623.html '> CB623 </a></li>
-<li><a href=' wind_trajectory/CB624.html '> CB624 </a></li>
-<li><a href=' wind_trajectory/CB627.html '> CB627 </a></li>
-</ul>
 </div>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="contributors">Contributors</h2>
+<p><strong>Garrett Rhyne</strong> (<em>Louisiana State University, School of Renewable Natural Resources</em>)<br />
+Philip Stouffer (<em>Louisiana State University, School of Renewable Natural Resources</em>)<br />
+Than Boves (<em>Arkansas State University, College of Biological Sciences</em>)<br />
+Lesley Bulluck (<em>Virginia Commonwealth University, Center for Environmental Studies</em>)<br />
+Ashley Peele (<em>Virginia Tech, Conservation Management Institute</em>)<br />
+David Buehler (<em>University of Tennessee Knoxville, Ecology &amp; Evolutionary Biology</em>)<br />
+Dawson Radar (<em>University of Tennessee Knoxville, Ecology &amp; Evolutionary Biology</em>)<br />
+Jennifer Tyrrell (<em>Adudubon South Carolina</em>)<br />
+Matthew Johnson (<em>Audubon South Carolina</em>)</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
