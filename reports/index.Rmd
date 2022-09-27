@@ -5,9 +5,9 @@ description: |
 site: distill::distill_website
 ---
 
-This site contains geolocation data of Swainson's Warblers (*Limnothlypis swainsonii*) that comes from a collaborative effort of researchers across the southeastern United States to assess migratory connectivity across breeding populations and characterize their wintering distribution, migratory paths, phenology, and migratory behavior. Multi-sensor geolocators (BARP50Z11-7-DIP, Migrate Technology) were deployed on territorial males in the spring / summer of 2021, and recovered in 2022. Tag data was analyzed implementing the GeoPressureR package [GeoPressureR](https://raphaelnussbaumer.com/GeoPressureManual/index.html), which uses weather reanalysis data (ERA5) to match spatio-temporal patterns of atmospheric pressure across the deployment period, providing a more accurate approach of geolocation than conventional light-level methods.
+This site contains geolocation data of Swainson's Warblers (*Limnothlypis swainsonii*) that comes from a collaborative effort of researchers across the southeastern United States to assess migratory connectivity across breeding populations and characterize their wintering distribution, migratory paths, phenology, and migratory behavior. Multi-sensor geolocators (BARP50Z11-7-DIP, Migrate Technology) were deployed on territorial males in the spring / summer of 2021, and recovered in 2022. Tag data was analyzed implementing the [GeoPressureR](https://raphaelnussbaumer.com/GeoPressureManual/index.html) package, which uses weather reanalysis data (ERA5) to match spatio-temporal patterns of atmospheric pressure across the deployment period, providing a more accurate approach of geolocation than conventional light-level methods.
 
-![Source: Phil Stouffer](../docs/SWWA_MainPhoto.jpg)
+![Source: Phil Stouffer](/SWWA_Pressure/docs/SWWA_MainPhoto.jpg)
 
 Each page allows you to explore an individual tag, which can be navigated by breeding region in the top menu bar. For each tag you can find interactive Leaflets and ggplots of the likely and simulated migratory paths, marginal probability heat maps, altitude plots, wind assistance maps, and flight histograms. This code workflow and reports are based on the GeoPressureTemplate.[GeoPressureTemplate](https://github.com/Rafnuss/GeoPressureTemplate).  
 
