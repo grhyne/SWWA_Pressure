@@ -9,7 +9,7 @@ This site contains geolocation data of Swainson's Warblers (*Limnothlypis swains
 
 ![Source: Phil Stouffer](/SWWA_Pressure/docs/SWWA_MainPhoto.jpg)
 
-Each page allows you to explore an individual tag, which can be navigated by breeding region in the top menu bar. For each tag you can find interactive Leaflets and ggplots of the likely and simulated migratory paths, marginal probability heat maps, altitude plots, wind assistance maps, and flight histograms. This code workflow and reports are based on the GeoPressureTemplate.[GeoPressureTemplate](https://github.com/Rafnuss/GeoPressureTemplate).  
+Each page allows you to explore an individual tag, which can be navigated by breeding region in the top menu bar. For each tag you can find interactive Leaflets and ggplots of the likely and simulated migratory paths, marginal probability heat maps, altitude plots, wind assistance maps, and flight histograms. This code workflow and reports are based on the [GeoPressureTemplate](https://github.com/Rafnuss/GeoPressureTemplate).  
 
 ## Tag Data
 
