@@ -39,10 +39,7 @@ navbar:
           href: "/SWWA_Pressure/basic_trajectory/CB620.html"
         - text: "CB621"
           href: "/SWWA_Pressure/basic_trajectory/CB621.html"
-    - text: "Technical Details"
-      menu:
-        - text: "CB594"
-          href: "/SWWA_Pressure/technical_details/CB594.html"
+
   right:
     - icon: fa-envelope fa-lg
       href: mailto:<grhyne1@lsu.edu>
