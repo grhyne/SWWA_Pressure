@@ -4,10 +4,10 @@ library(leaflet.extras)
 library(raster)
 library(igraph)
 
-debug <- F
+debug <- T
 
 # Define which track to work with
-gdl <- "CB620"
+gdl <- "CB599"
 
 # Load static prob
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))

@@ -1,6 +1,9 @@
 
 # Currently only work using this branch
- devtools::install_github("Rafnuss/GeoPressureR")
+ #library(pacman)
+#pacman::p_load_current_gh(char = 'Rafnuss/GeoPressureR')
+#github_update()
+# devtools::install_github("Rafnuss/GeoPressureR")
  library(GeoPressureR)
  library(leaflet)
  library(leaflet.providers)
@@ -16,7 +19,7 @@
  debug <- T
 
  # Define the geolocator data logger id to use
- gdl <- "CB620"
+ gdl <- "CB599"
 
  # Read its information from gpr_settings.xlsx
  gpr <- read_excel("data/gpr_settings.xlsx") %>%
