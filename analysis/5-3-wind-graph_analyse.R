@@ -5,7 +5,7 @@ library(raster)
 library(igraph)
 
 # Define which track to work with
-gdl <- "CB620"
+gdl <- "CB624"
 
 debug <- F
 

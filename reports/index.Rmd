@@ -36,9 +36,9 @@ for (i_f_dir in unique(f_dirname)) {
 
 __Garrett Rhyne__ (*Louisiana State University, School of Renewable Natural Resources*)  
 Philip Stouffer (*Louisiana State University, School of Renewable Natural Resources*)  
-Than Boves (*Arkansas State University, College of Biological Sciences*)  
 Lesley Bulluck (*Virginia Commonwealth University, Center for Environmental Studies*)  
-Ashley Peele (*Virginia Tech, Conservation Management Institute*)  
+Ashley Peele (*Virginia Tech, Conservation Management Institute*) 
+Than Boves (*Arkansas State University, College of Biological Sciences*)  
 David Buehler (*University of Tennessee Knoxville, Ecology & Evolutionary Biology*)  
 Dawson Radar (*University of Tennessee Knoxville, Ecology & Evolutionary Biology*)  
 Jennifer Tyrrell (*Adudubon South Carolina*)  
