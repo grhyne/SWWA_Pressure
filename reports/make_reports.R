@@ -2,8 +2,10 @@
 library(rmarkdown)
 library(readxl)
 
+#Storage: "CB594","CB596","CB598", "CB599","CB601","CB608","CB611",
+
 # Define the track to consider
-gdl_list <- c("CB594","CB596","CB598", "CB599","CB601","CB608","CB611","CB616", "CB619","CB620","CB621",
+gdl_list <- c("CB619","CB620","CB621",
               "CB623","CB624","CB627")
 # set <- read_excel("data/gdl_settings.xlsx")
 # gdl_list = set$gdl_id
