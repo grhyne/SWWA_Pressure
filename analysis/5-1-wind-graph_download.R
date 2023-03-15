@@ -1,7 +1,8 @@
 library(ecmwfr)
+library(GeoPressureR)
 
 # Define which track to work with
-gdl <- "CB620"
+gdl <- "CB594"
 
 # Load
 load(paste0("data/3_static/", gdl, "_static_prob.Rdata"))

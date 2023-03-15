@@ -5,9 +5,9 @@ library(raster)
 library(igraph)
 
 # Define which track to work with
-gdl <- "CB624"
+gdl <- "CB594"
 
-debug <- F
+debug <- T
 
 # Load
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
@@ -40,9 +40,9 @@ g <- graph_from_data_frame(data.frame(
   weight = -log(grl$p)
 ))
 
-retrival <- which.max(as.matrix(static_prob_marginal[[length(static_prob_marginal)]])) + grl$sz[1] * grl$sz[2] * (grl$sz[3] - 1)
-stopifnot(retrival %in% grl$retrival)
-sp <- shortest_paths(g, from = paste(grl$equipement), to = paste(retrival))
+retrieval <- which.max(as.matrix(static_prob_marginal[[length(static_prob_marginal)]])) + grl$sz[1] * grl$sz[2] * (grl$sz[3] - 1)
+stopifnot(retrieval %in% grl$retrieval)
+sp <- shortest_paths(g, from = paste(grl$equipement), to = paste(retrieval))
 
 # Convert igraph representation to lat-lon
 shortest_path <- graph_path2lonlat(as.numeric(sp$vpath[[1]]$name), grl)
@@ -54,33 +54,14 @@ nj <- 30
 path_sim <- graph_simulation(grl, nj = nj)
 
 
-
 if (debug) {
-
-  # In depth analysis with GeoPressureViz
-  load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
-  #load(paste0("data/2_light/", gdl, "_light_prob.Rdata"))
-  load(paste0("data/3_static/", gdl, "_static_prob.Rdata"))
-
-  sta_marginal <- unlist(lapply(static_prob_marginal, function(x) raster::metadata(x)$sta_id))
-  sta_pres <- unlist(lapply(pressure_prob, function(x) raster::metadata(x)$sta_id))
-  #sta_light <- unlist(lapply(light_prob, function(x) raster::metadata(x)$sta_id))
-  pressure_prob <- pressure_prob[sta_pres %in% sta_marginal]
-  #light_prob <- light_prob[sta_light %in% sta_marginal]
-
-
-  geopressureviz <- list(
-    pam_data = pam,
+  geopressureviz(
+    pam = pam,
     static_prob = static_prob,
     static_prob_marginal = static_prob_marginal,
     pressure_prob = pressure_prob,
     #light_prob = light_prob,
     pressure_timeserie = shortest_path_timeserie
-  )
-  save(geopressureviz, file = "~/geopressureviz.RData")
-
-  shiny::runApp(system.file("geopressureviz", package = "GeoPressureR"),
-                launch.browser = getOption("browser")
   )
 }
 

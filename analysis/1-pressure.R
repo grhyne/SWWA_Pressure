@@ -1,9 +1,9 @@
 
 # Currently only work using this branch
- #library(pacman)
+# library(pacman)
 #pacman::p_load_current_gh(char = 'Rafnuss/GeoPressureR')
 #github_update()
-# devtools::install_github("Rafnuss/GeoPressureR")
+#devtools::install_github("Rafnuss/GeoPressureR")
  library(GeoPressureR)
  library(leaflet)
  library(leaflet.providers)
@@ -16,10 +16,10 @@
  library(readxl)
 
  # Set debug T to see all check and set to F once everything is correct
- debug <- F
+ debug <- T
 
  # Define the geolocator data logger id to use
- gdl <- "CB620"
+ gdl <- "CB594"
 
  # Read its information from gpr_settings.xlsx
  gpr <- read_excel("data/gpr_settings.xlsx") %>%
@@ -29,7 +29,7 @@
  pam <- pam_read(
    paste0("data/0_PAM/", gpr$gdl_id),
    pressure_file = "*.deg",
-   light_file = "*.lux",
+   #light_file = "*.lux",
    crop_start = gpr$crop_start,
    crop_end = gpr$crop_end,
    id = "basename"
@@ -39,6 +39,9 @@
  pam$acceleration = pam$pressure
  pam$acceleration$obs = 0
  pam$acceleration$ismig = FALSE
+
+ #Generate fake light data
+ pam$light = pam$pressure
 
  # Auto classification + writing, only done the first time
  if (!file.exists(paste0("data/1_pressure/labels/", gpr$gdl_id, "_act_pres-labeled.csv"))) {
