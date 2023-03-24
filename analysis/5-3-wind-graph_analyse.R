@@ -5,9 +5,10 @@ library(raster)
 library(igraph)
 
 # Define which track to work with
-gdl <- "CB594"
+gdl <- "CB599"
 
-debug <- T
+debug <- F
+
 
 # Load
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
@@ -74,3 +75,7 @@ save(
   shortest_path_timeserie,
   file = paste0("data/5_wind_graph/", gdl, "_wind_graph.Rdata")
 )
+
+
+
+method="ngb"

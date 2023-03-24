@@ -2,7 +2,7 @@ library(ecmwfr)
 library(GeoPressureR)
 
 # Define which track to work with
-gdl <- "CB594"
+gdl <- "CB627"
 
 # Load
 load(paste0("data/3_static/", gdl, "_static_prob.Rdata"))
@@ -19,5 +19,6 @@ graph_download_wind(pam,
                     cds_key= cds.key,
                     cds_user= cds.user
 )
+
 
 # Check request at https://cds.climate.copernicus.eu/cdsapp#!/yourrequests

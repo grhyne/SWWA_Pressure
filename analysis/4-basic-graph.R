@@ -4,10 +4,11 @@ library(leaflet.extras)
 library(raster)
 library(igraph)
 
-debug <- T
+debug <- F
 
 # Define which track to work with
-gdl <- "CB594"
+gdl <- "CB601"
+
 
 # Load static prob
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
@@ -70,3 +71,5 @@ save( grl,
   shortest_path_timeserie,
   file = paste0("data/4_basic_graph/", gpr$gdl_id, "_basic_graph.Rdata")
 )
+
+

@@ -12,7 +12,7 @@ library(readxl)
 debug <- F
 
 # Define the geolocator data logger id to use
-gdl <- "CB594"
+gdl <- "CB601"
 
 # Load the pressure file, also contains set, pam, col
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
@@ -106,6 +106,114 @@ if (!is.na(gpr$calib_2_start)) {
 # Get pressure timeseries at the best match of static
 path <- geopressure_map2path(static_prob)
 static_timeserie <- geopressure_ts_path(path, pam$pressure)
+
+if (debug) {
+  # GeopressureViz
+  path_modified <- geopressureviz(
+    pam = pam,
+    static_prob = static_prob,
+    pressure_prob = pressure_prob,
+    #light_prob = light_prob,
+    pressure_timeserie = static_timeserie
+  )
+
+  # Pressure
+  path_modified_timeserie <- geopressure_ts_path(path_modified, pam$pressure)
+
+  path_modified_ts_bind <- do.call("rbind", path_modified_timeserie) %>%
+    filter(!is.na(sta_id))
+
+  # To make the labeling easier, you can replace pam$pressure$obs by the difference between
+  # pam$pressure$obs and pressure_timeserie$pressure0 to see the anomalies.
+  # Because trainset_read does not read the actual value of obs, but simply the label, it won't
+  # impact your code
+  pam_diff <- pam
+  pam_diff$pressure <- pam_diff$pressure %>%
+    left_join(path_modified_ts_bind %>% dplyr::select(c("date", "pressure0")), by = "date") %>%
+    rename(obs_ref = pressure0)
+
+  trainset_write(pam_diff, "data/1_pressure/labels/", filename = paste0(pam$id, "_act_pres"))
+
+  # We can automatically extract some outlier based on s value
+  # pam_diff_pressure <- pam_diff_pressure %>%
+  #  mutate( isoutlier = ifelse(!isoutlier&abs(diff)>4*gpr$prob_map_s&sta_id>0, TRUE, isoutlier))
+  # message(sum(pam_diff_pressure$isoutlier)-sum(pam$pressure$isoutlier), " new outlier automatically added")
+  #twl_path <- left_join(twl, path_modified) %>%
+   # mutate(
+#       twilight = twilight(twilight,
+#                           lon = lon, lat = lat, rise = rise, zenith = 96
+#       )
+#     ) %>%
+#     filter(!is.na(twilight))
+#
+#   write.csv(
+#     df <- rbind(
+#       data.frame(
+#         series = ifelse(twl$rise, "Rise", "Set"),
+#         timestamp = strftime(twl$twilight, "%Y-%m-%dT00:00:00Z", tz = "UTC"),
+#         value = (as.numeric(format(twl$twilight, "%H")) * 60 + as.numeric(format(twl$twilight, "%M"))
+#                  + gpr$shift_k / 60 + 60 * 12) %% (60 * 24),
+#         label = ifelse(is.na(twl$delete), "", ifelse(twl$delete, "Delete", ""))
+#       ),
+#       data.frame(
+#         series = ifelse(twl_path$rise, "Set_ref", "Rise_ref"),
+#         timestamp = strftime(twl_path$twilight, "%Y-%m-%dT00:00:00Z", tz = "UTC"),
+#         value = (as.numeric(format(twl_path$twilight, "%H")) * 60 + as.numeric(format(twl_path$twilight, "%M"))
+#                  + gpr$shift_k / 60 + 60 * 12) %% (60 * 24),
+#         label = ""
+#       )
+#     ),
+#     paste0("data/2_light/labels/", gpr$gdl_id, "_light.csv"),
+#     row.names = FALSE
+#   )
+ }
+
+if (debug) {
+  # Check 1
+  static_prob_n <- lapply(static_prob, function(x) {
+    probt <- raster::as.matrix(x)
+    probt[is.na(probt)] <- 0
+    probt / sum(probt, na.rm = T)
+  })
+  tmp <- unlist(lapply(static_prob_n, sum)) == 0
+  if (any(tmp)) {
+    warning(paste0(
+      "The `static_prob` provided has a probability map equal to ",
+      "zero for the stationay period: ", which(tmp)
+    ))
+  }
+
+
+  ## Check 2
+  for (i_s in seq_len(length(static_prob) - 1)) {
+    cur <- as.matrix(static_prob[[i_s]]) > 0
+    cur[is.na(cur)] <- F
+    nex <- as.matrix(static_prob[[i_s + 1]]) > 0
+    nex[is.na(nex)] <- F
+
+    mtf <- metadata(static_prob[[i_s]])
+    flight_duration <- as.numeric(sum(difftime(mtf$flight$end, mtf$flight$start, unit = "hours"))) # hours
+    resolution <- mean(res(static_prob[[1]])) * 111 # assuming 1°= 111km
+    thr_gs <- # Assuming a max groundspeed of 150km/h
+      # Accepting a minimium of 3 grid resolution for noise/uncertainty.
+      flight_duration <- pmax(flight_duration, resolution * 3 / gpr$thr_gs)
+
+    # Check possible position at next stationary period
+    possible_next <- (EBImage::distmap(!cur) * resolution / flight_duration) < gpr$thr_gs
+
+    if (sum(possible_next & nex) == 0) {
+      stop(paste("There are no possible transition from stationary period", i_s, "to", i_s + 1, ". Check part 1 process (light and pressure)", sep = " "))
+    }
+  }
+}
+
+
+
+
+
+
+
+
 
 
 if (debug) {

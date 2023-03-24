@@ -19,7 +19,8 @@
  debug <- T
 
  # Define the geolocator data logger id to use
- gdl <- "CB594"
+ gdl <- "CB601"
+
 
  # Read its information from gpr_settings.xlsx
  gpr <- read_excel("data/gpr_settings.xlsx") %>%
@@ -174,6 +175,8 @@
    gpr,
    file = paste0("data/1_pressure/", gpr$gdl_id, "_pressure_prob.Rdata")
  )
+
+
 
  #View the pressure map
  li_s <- list()
