@@ -69,7 +69,7 @@ for (i_r in seq_len(length(static_prob_marginal))) {
   info_str <- paste0(i_s, " | ", info[1], "->", info[2])
   li_s <- append(li_s, info_str)
   l <- l %>%
-    addRasterImage(static_prob_marginal[[i_r]], colors = "OrRd", opacity = 0.8, group = info_str)
+    addRasterImage(static_prob_marginal[[i_r]], colors = "OrRd", opacity = 0.8, group = info_str, method = "ngb")
 }
 l  %>%
   addLayersControl(
