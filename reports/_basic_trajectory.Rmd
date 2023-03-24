@@ -56,7 +56,7 @@ m %>%
 
 ## Marginal Probability Map
 
-The marginal probability map estimates the overall probability of position at each stationary period regardless of the trajectory taken by the bird. It is the most useful quantification of the uncertainty of the position of the bird. Select each stationary period (labeled by the first number, followed by the dates of duration) to view the progression of the full annual cycle.
+The marginal probability map estimates the overall probability of position at each stationary period. It is the most useful quantification of the uncertainty of the position of the bird. Select each stationary period (labeled by the first number, followed by the dates of duration) to view the progression of the full annual cycle.
 
 ```{r, warning=F, layout="l-page"}
 li_s <- list()
@@ -82,7 +82,7 @@ l  %>%
 
 ## Altitude
 
-Altitudes are computed based on pressure measurement of the geolocation, corrected based on the assumed location of the shortest path. This correction accounts for the natural variation of pressure as estimated by ERA-5. 
+Altitudes are computed based on pressure measurements, corrected based on the assumed location of the shortest path. This correction accounts for the natural variation of pressure as estimated by ERA-5. 
 
 Each stationary period is indicated by a separate color, while each migratory period is colored black. Click and drag a viewing area to zoom into different events for further details.
 
@@ -178,7 +178,7 @@ Wind data (ERA5) displayed during migration periods between the stationary perio
 
 ## Histogram of Migration Speed and Duration
 
-Comparison of each migratory flight ground speed (gs), wind speed (ws), air speed (as), and flight duration (hours).
+Comparison of each migratory flight ground speed (gs), wind speed (ws), air speed (as), and flight duration (hours). Each flight is labeled as the starting stationary period to the next.
 
 ```{r, warning=F, layout="l-page", fig.height=5}
 edge <- t(graph_path2edge(path_sim$id, grl))
