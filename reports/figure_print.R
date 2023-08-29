@@ -22,9 +22,9 @@ library(RColorBrewer)
 register_google(key = "AIzaSyBjynWQYVvjO5prP_eojRow_Tjz_QjHxC8")
 
 
-gdl_list <- c("CB594", "CB596","CB598", "CB599","CB601","CB608","CB611","CB616", "CB619","CB620","CB621","CB623","CB624","CB627") #Complete list
+#gdl_list <- c("CB594", "CB596","CB598", "CB599","CB601","CB608","CB611","CB616", "CB619","CB620","CB621","CB623","CB624","CB627") #Complete list
 #gdl_list <- c("CB594", "CB596","CB598", "CB599","CB601","CB616","CB619","CB620") #Cuba Wintering Locations
-#gdl_list <- c("CB608", "CB611", "CB621","CB623","CB624","CB627") # Yucatan Wintering Locations
+gdl_list <- c("CB608", "CB611", "CB621","CB623","CB624","CB627") # Yucatan Wintering Locations
 
 gpr <- read_excel("~/SWWA_Connectivity/Analysis/SWWA_Pressure/data/gpr_settings.xlsx") %>%
   filter(gdl_id %in% gdl_list)
@@ -221,15 +221,15 @@ ggsave(plot=p, "reports/figure_print/bar_chart.eps", width = 8, height = 4)
 
 
 # Map of trajectory ----
-p0 <- get_googlemap(center = c(lon = -81.2, lat = 22.7), zoom = 7, maptype = "hybrid", size = c(1280, 1280), scale = 4) %>%
+p0 <- get_googlemap(center = c(lon = -91.4, lat = 27.1), zoom = 5, maptype = "satellite", size = c(1280, 1280), scale = 4) %>%
   ggmap() + theme_map()
-#Cuba location: c(lon = -81.2, lat = 22.7)
+#Cuba location: c(lon = -81.2, lat = 27.1)
 #Yucatan: c(lon = -91.4, lat = 27.1)
 
 #e <- extent(static_prob_marginal[[1]])
 #e <- c(e[1]+1, e[2]-1, e[3]+1, e[4]-1 )
-e <- c(-88, -72, 17.8,39) #Cuban extent
-#e <- c(-98.5, -78.5, 13, 39) #Yucatan extent
+#e <- c(-88, -72, 17.8,39) #Cuban extent
+e <- c(-98.5, -78.5, 13, 39) #Yucatan extent
 doy_start = yday("2021-7-1")
 doy_lim = (c(yday("2021-9-15"), yday("2022-5-15")) - doy_start) %% 365
 
@@ -255,7 +255,7 @@ for (i in seq(1, length(gdl_list))) {
     doy = (doy + doy_start) %% 365
 
     p <- p +
-      geom_tile(data = d, aes(x, y, alpha = layer), fill = colour("imola")(365)[doy]) + # brewer.pal(8,"Dark2")[i_s %% 7])  +
+      geom_tile(data = d, aes(x, y, alpha = layer), fill = colour("imola")(365)[doy]) + #brewer.pal(8,"Dark2")[i_s %% 7]  +
       scale_alpha(range = c(0, 1)) + new_scale("alpha")
   }
 
@@ -713,7 +713,7 @@ for (i in seq(1, length(gdl_list))) {
 
 # Table of transition ----
 trans_df=list()
-for (i in seq(4, length(gdl_list))) {
+for (i in seq(10, length(gdl_list))) {
   gdl <- gdl_list[i]
   load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
   load(paste0("data/5_wind_graph/", gdl, "_wind_graph.Rdata"))
@@ -738,63 +738,63 @@ for (i in seq(4, length(gdl_list))) {
 
   # Find sunrise and sunset of the flight
   # first find the day of the flight (closest day between start and end time of flight)
-  mid_day_flight = round(
-    flight_df$start_flight+(flight_df$end_flight-flight_df$start_flight)/2,
-    unit="day")
+ # mid_day_flight = round(
+   # flight_df$start_flight+(flight_df$end_flight-flight_df$start_flight)/2,
+   # unit="day")
   # use twilight from geolight to figure out the sunrise and sunset. Use the location of arrival/departure of the flight and adjust the day
-  flight_df$sunrise = twilight(mid_day_flight+hours(2), tail(shortest_path$lon,-1) , tail(shortest_path$lat,-1), rise = rep(T,length(mid_day_flight)))
-  flight_df$sunset = twilight(mid_day_flight-hours(2), head(shortest_path$lon,-1) , head(shortest_path$lat,-1), rise = rep(F,length(mid_day_flight)))
+ # flight_df$sunrise = twilight(mid_day_flight+hours(2), tail(shortest_path$lon,-1) , tail(shortest_path$lat,-1), rise = rep(T,length(mid_day_flight)))
+ # flight_df$sunset = twilight(mid_day_flight-hours(2), head(shortest_path$lon,-1) , head(shortest_path$lat,-1), rise = rep(F,length(mid_day_flight)))
 
 
-  speed_df <- data.frame(
-    as = abs(grl$as[edge]),
-    gs = abs(grl$gs[edge]),
-    ws = abs(grl$ws[edge]),
-    dist = geosphere::distGeo(
-      cbind(as.vector(t(path_sim$lon[,1:nsta-1])), as.vector(t(path_sim$lat[,1:nsta-1]))),
-      cbind(as.vector(t(path_sim$lon[,2:nsta])),   as.vector(t(path_sim$lat[,2:nsta])))
-    ) / 1000,
-    sta_id_s = rep(head(grl$sta_id,-1), nj),
-    sta_id_t = rep(tail(grl$sta_id,-1), nj),
-    flight_duration = rep(head(grl$flight_duration,-1), nj)
+speed_df <- data.frame(
+  as = abs(grl$as[edge]),
+  gs = abs(grl$gs[edge]),
+  ws = abs(grl$ws[edge]),
+  dist = geosphere::distGeo(
+    cbind(as.vector(t(path_sim$lon[,1:nsta-1])), as.vector(t(path_sim$lat[,1:nsta-1]))),
+    cbind(as.vector(t(path_sim$lon[,2:nsta])),   as.vector(t(path_sim$lat[,2:nsta])))
+  ) / 1000,
+  sta_id_s = rep(head(grl$sta_id,-1), nj),
+  sta_id_t = rep(tail(grl$sta_id,-1), nj),
+  flight_duration = rep(head(grl$flight_duration,-1), nj)
+) %>%
+  group_by(sta_id_s,sta_id_t,flight_duration) %>%
+  summarise(
+    as_m = mean(as),
+    as_s = sd(as),
+    gs_m = mean(gs),
+    gs_s = sd(gs),
+    ws_m = mean(ws),
+    ws_s = sd(ws),
+    dist_m = mean(dist),
+    dist_s = sd(dist)
   ) %>%
-    group_by(sta_id_s,sta_id_t,flight_duration) %>%
-    summarise(
-      as_m = mean(as),
-      as_s = sd(as),
-      gs_m = mean(gs),
-      gs_s = sd(gs),
-      ws_m = mean(ws),
-      ws_s = sd(ws),
-      dist_m = mean(dist),
-      dist_s = sd(dist)
-    ) %>%
-    mutate(
-      gam = acos((ws_m^2+gs_m^2-as_m^2)/(2*ws_m*gs_m)), # law of Cosines
-      ws_m_support = ws_m*cos(gam),
-      ws_m_drift = ws_m*sin(gam)
-    ) %>% dplyr::select(-gam)
+  mutate(
+    gam = acos((ws_m^2+gs_m^2-as_m^2)/(2*ws_m*gs_m)), # law of Cosines
+    ws_m_support = ws_m*cos(gam),
+    ws_m_drift = ws_m*sin(gam)
+  ) %>% dplyr::select(-gam)
 
-  edge_sp <- t(graph_path2edge(shortest_path$id, grl))
+edge_sp <- t(graph_path2edge(shortest_path$id, grl))
 
-  speed_sp_df <- data.frame(
-    as_sp = abs(grl$as[edge_sp]),
-    gs_sp = abs(grl$gs[edge_sp]),
-    ws_sp = abs(grl$ws[edge_sp]),
-    dist_sp = geosphere::distGeo(
-      cbind(shortest_path$lon[1:nsta-1], shortest_path$lat[1:nsta-1]),
-      cbind(shortest_path$lon[2:nsta],   shortest_path$lat[2:nsta])
-    ) / 1000,
-    sta_id_s = head(shortest_path$sta_id,-1),
-    sta_id_t = tail(shortest_path$sta_id,-1)
-  ) %>%
-    mutate(
-      gam = acos((ws_sp^2+gs_sp^2-as_sp^2)/(2*ws_sp*gs_sp)), # law of Cosines
-      ws_sp_support = ws_sp*cos(gam),
-      ws_sp_drift = ws_sp*sin(gam)
-    ) %>% dplyr::select(-gam)
+speed_sp_df <- data.frame(
+  as_sp = abs(grl$as[edge_sp]),
+  gs_sp = abs(grl$gs[edge_sp]),
+  ws_sp = abs(grl$ws[edge_sp]),
+  dist_sp = geosphere::distGeo(
+    cbind(shortest_path$lon[1:nsta-1], shortest_path$lat[1:nsta-1]),
+    cbind(shortest_path$lon[2:nsta],   shortest_path$lat[2:nsta])
+  ) / 1000,
+  sta_id_s = head(shortest_path$sta_id,-1),
+  sta_id_t = tail(shortest_path$sta_id,-1)
+) %>%
+  mutate(
+    gam = acos((ws_sp^2+gs_sp^2-as_sp^2)/(2*ws_sp*gs_sp)), # law of Cosines
+    ws_sp_support = ws_sp*cos(gam),
+    ws_sp_drift = ws_sp*sin(gam)
+  ) %>% dplyr::select(-gam)
 
-  alt_df = do.call("rbind", shortest_path_timeserie) %>%
+alt_df = do.call("rbind", shortest_path_timeserie) %>%
     arrange(date) %>%
     mutate(
       sta_id_s = cummax(sta_id),
@@ -812,13 +812,13 @@ for (i in seq(4, length(gdl_list))) {
       alt_sumposdiff = sum(ifelse(diff_altitude>0,diff_altitude,0)),
     )
 
-  trans_df[[i]] <- speed_df  %>%
-    left_join(flight_df) %>%
-    left_join(speed_sp_df) %>%
-    left_join(alt_df) %>%
-    mutate(gdl_id = gdl)
+  # trans_df[[i]] <- speed_df  %>%
+  #   left_join(flight_df) %>%
+  #   left_join(speed_sp_df) %>%
+  #   left_join(alt_df) %>%
+  #   mutate(gdl_id = gdl)
 
-  write.csv(trans_df[[i]],paste0("reports/figure_print/table_transition/transition_",gdl,".csv"))
+  write.csv(alt_df[[i]],paste0("reports/figure_print/table_transition/transition_",gdl,".csv"))
 }
 
 write.csv(do.call(rbind, trans_df),paste0("reports/figure_print/table_transition/transition_df.csv"))
@@ -826,3 +826,34 @@ write.csv(do.call(rbind, trans_df),paste0("reports/figure_print/table_transition
 
 
 
+##Altitude table
+
+
+for (i in seq(1, length(gdl_list))) {
+  gdl <- gdl_list[i]
+  load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
+  load(paste0("data/5_wind_graph/", gdl, "_wind_graph.Rdata"))
+  load(paste0("data/5_wind_graph/", gdl, "_grl.Rdata"))
+
+alt_df = do.call("rbind", shortest_path_timeserie) %>%
+  arrange(date) %>%
+  mutate(
+    sta_id_s = cummax(sta_id),
+    sta_id_t = sta_id_s+1
+  ) %>%
+  filter(sta_id == 0 & sta_id_s > 0 ) %>%
+  group_by(sta_id_s, sta_id_t) %>%
+  mutate(diff_altitude = altitude-lag(altitude, default = altitude[1])) %>%
+  summarise(
+    alt_min = min(altitude),
+    alt_max = max(altitude),
+    alt_mean = mean(altitude),
+    alt_med = median(altitude),
+    alt_sumdabsdiff = sum(abs(diff_altitude)),
+    alt_sumposdiff = sum(ifelse(diff_altitude>0,diff_altitude,0)),
+  )
+
+write.csv(alt_df,paste0("reports/figure_print/table_transition/transition_",gdl,".csv"))
+
+
+}
