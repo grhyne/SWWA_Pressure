@@ -101,7 +101,7 @@ ggplotly(p, dynamicTicks = T) %>% layout(showlegend = F)
 
 ## Wind Assistance
 
-Wind data (ERA5) displayed during migration periods between the stationary periods along the shortest path simulation.
+Wind data (ERA5) displayed during migratory periods along the shortest path simulation.
 
 ```{r, warning=F, layout="l-page"}
   fun_marker_color <- function(norm){
@@ -177,9 +177,9 @@ Wind data (ERA5) displayed during migration periods between the stationary perio
   m
 ```
 
-## Histogram of Migration Flight Characteristics
+## Migratory Flight Data
 
-Comparison of each migratory flight duration (hours), ground speed (gs, km/h), wind speed (ws, km/h), air speed (as, km/h), maximum altitude (m), and mean altitude (m). Each flight is labeled as the starting stationary period to the next.
+Comparison of each migratory flight duration (hours), ground speed (gs, km/h), wind speed (ws, km/h), air speed (as, km/h), maximum altitude (m), and mean altitude (m). Each flight is labeled as the starting stationary period to the next. Hover over each plot for details
 
 ```{r, warning=F, layout="l-page", fig.height=5}
 edge <- t(graph_path2edge(path_sim$id, grl))
@@ -234,7 +234,7 @@ subplot(ggplotly(plot4), ggplotly(plot1), ggplotly(plot2), ggplotly(plot3), ggpl
 
 ## Pressure calibration
 
-Error histogram of pressure compared to ERA5 for each stationary period. Longer stationary periods will have a tighter, more normal distribution of error than compared to short stationary periods
+Histogram of error between recorded pressure and ERA5 for each stationary period
 
 ```{r, layout="l-page"}
 pressure_ts_bind <- do.call("rbind", shortest_path_timeserie) %>%
