@@ -69,7 +69,8 @@ for (i_r in seq_len(length(static_prob_marginal))) {
   info_str <- paste0(i_s, " | ", info[1], "->", info[2])
   li_s <- append(li_s, info_str)
   l <- l %>%
-    addRasterImage(static_prob_marginal[[i_r]], colors = "OrRd", opacity = 0.8, group = info_str, method = "ngb")
+    addRasterImage(static_prob_marginal[[i_r]], colors = "OrRd", opacity = 0.8, group = info_str) #method = "ngb") #%>%
+    #addCircles(lng = shortest_path$lon[i_s], lat = shortest_path$lat[i_s], opacity = 1, color = "#000", weight = 10, group = info_str)
 }
 l  %>%
   addLayersControl(
@@ -176,9 +177,9 @@ Wind data (ERA5) displayed during migration periods between the stationary perio
   m
 ```
 
-## Histogram of Migration Speed and Duration
+## Histogram of Migration Flight Characteristics
 
-Comparison of each migratory flight ground speed (gs), wind speed (ws), air speed (as), and flight duration (hours). Each flight is labeled as the starting stationary period to the next.
+Comparison of each migratory flight duration (hours), ground speed (gs, km/h), wind speed (ws, km/h), air speed (as, km/h), maximum altitude (m), and mean altitude (m). Each flight is labeled as the starting stationary period to the next.
 
 ```{r, warning=F, layout="l-page", fig.height=5}
 edge <- t(graph_path2edge(path_sim$id, grl))
@@ -200,13 +201,55 @@ speed_df <- data.frame(
   name = paste(sta_id_s,sta_id_t, sep="-")
 )
 
-plot1 <- ggplot(speed_df, aes(reorder(name, sta_id_s), gs)) + geom_boxplot() + theme_bw() +scale_x_discrete(name = "")
-plot2 <- ggplot(speed_df, aes(reorder(name, sta_id_s), ws)) + geom_boxplot() + theme_bw() +scale_x_discrete(name = "")
-plot3 <- ggplot(speed_df, aes(reorder(name, sta_id_s), as)) + geom_boxplot() + theme_bw() +scale_x_discrete(name = "")
-plot4 <- ggplot(speed_df, aes(reorder(name, sta_id_s), flight_duration)) + geom_point() + theme_bw() +scale_x_discrete(name = "")
+alt_df = do.call("rbind", shortest_path_timeserie) %>%
+    arrange(date) %>%
+    mutate(
+      sta_id_s = cummax(sta_id),
+      sta_id_t = sta_id_s+1
+    ) %>%
+    filter(sta_id == 0 & sta_id_s > 0 ) %>%
+    group_by(sta_id_s, sta_id_t) %>%
+    mutate(diff_altitude = altitude-lag(altitude, default = altitude[1])) %>%
+    summarise(
+      alt_min = min(altitude),
+      alt_max = max(altitude),
+      alt_mean = mean(altitude),
+      alt_med = median(altitude),
+      alt_sumdabsdiff = sum(abs(diff_altitude)),
+      alt_sumposdiff = sum(ifelse(diff_altitude>0,diff_altitude,0)),
+    )
 
-subplot(ggplotly(plot1), ggplotly(plot2), ggplotly(plot3), ggplotly(plot4), nrows=4, titleY=T)
+com_df <- speed_df %>%
+  left_join(alt_df) 
+
+plot1 <- ggplot(com_df, aes(reorder(name, sta_id_s), gs)) + geom_boxplot() + theme_bw() +scale_x_discrete(name = "")
+plot2 <- ggplot(com_df, aes(reorder(name, sta_id_s), ws)) + geom_boxplot() + theme_bw() +scale_x_discrete(name = "")
+plot3 <- ggplot(com_df, aes(reorder(name, sta_id_s), as)) + geom_boxplot() + theme_bw() +scale_x_discrete(name = "")
+plot4 <- ggplot(com_df, aes(reorder(name, sta_id_s), flight_duration)) + geom_point() + theme_bw() +scale_x_discrete(name = "")
+plot5 <- ggplot(com_df, aes(reorder(name, sta_id_s), alt_max)) + geom_point() + theme_bw() +scale_x_discrete(name = "")
+plot6 <- ggplot(com_df, aes(reorder(name, sta_id_s), alt_mean)) + geom_point() + theme_bw() +scale_x_discrete(name = "")
+
+subplot(ggplotly(plot4), ggplotly(plot1), ggplotly(plot2), ggplotly(plot3), ggplotly(plot5), ggplotly(plot6), nrows=6, titleY=T)
 ```
 
+## Pressure calibration
 
+Error histogram of pressure compared to ERA5 for each stationary period. Longer stationary periods will have a tighter, more normal distribution of error than compared to short stationary periods
+
+```{r, layout="l-page"}
+pressure_ts_bind <- do.call("rbind", shortest_path_timeserie) %>%
+  filter(!is.na(sta_id))
+
+pam$pressure %>%
+  left_join(pressure_ts_bind %>% dplyr::select(c("date", "pressure0")), by = "date") %>%
+  mutate(diff = ifelse(is.na(pressure0), 0, obs - pressure0)) %>%
+  filter(sta_id > 0 & !isoutlier) %>%
+  group_by(sta_id) %>%
+  mutate(sta_id = paste0(sta_id, " (SD=", round(sd(diff), 2), " ; N=", n(), ")")) %>%
+  ggplot(aes(x = diff)) +
+  geom_histogram(aes(y = (..count..) / tapply(..count.., ..PANEL.., sum)[..PANEL..]), binwidth = .2) +
+  facet_wrap(~sta_id) +
+  scale_x_continuous(name = "Pressure Geolocator - best match ERA5 (hPa)") +
+  scale_y_continuous(name = "Normalized histogram")
+```
 
