@@ -7,7 +7,7 @@ library(igraph)
 debug <- F
 
 # Define which track to work with
-gdl <- "CB601"
+#gdl <- "CB619"
 
 
 # Load static prob

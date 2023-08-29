@@ -1,8 +1,11 @@
 library(tidyverse)
 library(readxl)
+library(GeoPressureR)
 
 gdl_list <- read_excel("data/gpr_settings.xlsx") %>%
   .$gdl_id
+
+#gdl_list <- c("CB598")
 
 for (i in seq(1, length(gdl_list))) {
   gdl <- gdl_list[i]
@@ -11,7 +14,10 @@ for (i in seq(1, length(gdl_list))) {
   source("analysis/4-basic-graph.R")
 }
 
+
+
 ## Check with GeoPressureViz
+gdl <- "CB598"
 load(paste0("data/1_pressure/", gdl, "_pressure_prob.Rdata"))
 load(paste0("data/3_static/", gdl, "_static_prob.Rdata"))
 load(paste0("data/4_basic_graph/", gdl, "_basic_graph.Rdata"))

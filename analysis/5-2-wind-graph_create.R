@@ -1,7 +1,7 @@
 library(GeoPressureR)
 
 # Define which track to work with
-gdl <- "CB599"
+#gdl <- "CB619"
 
 
 

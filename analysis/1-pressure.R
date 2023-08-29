@@ -19,7 +19,7 @@
  debug <- T
 
  # Define the geolocator data logger id to use
- gdl <- "CB601"
+ #gdl <- "CB620"
 
 
  # Read its information from gpr_settings.xlsx
