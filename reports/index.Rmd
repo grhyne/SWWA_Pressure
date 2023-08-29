@@ -5,11 +5,11 @@ description: |
 site: distill::distill_website
 ---
 
-This site contains geolocation data of Swainson's Warblers (*Limnothlypis swainsonii*) that comes from a collaborative effort of researchers across the southeastern United States to assess migratory connectivity across breeding populations and characterize their wintering distribution, migratory paths, phenology, and migratory behavior. Barometric geolocators (BARP50Z11-7-DIP, Migrate Technology) were deployed on territorial males in the spring / summer of 2021, and recovered in 2022. Tag data was analyzed implementing the [GeoPressureR](https://raphaelnussbaumer.com/GeoPressureManual/index.html) package, which uses weather reanalysis data (ERA5) to match spatio-temporal patterns of atmospheric pressure across the deployment period, providing a more accurate approach of geolocation than conventional light-level methods.
+This site contains results from barometric geolocator data of Swainson's Warblers (*Limnothlypis swainsonii*). This project involves a collaboration of researchers across the southeastern United States to assess migratory connectivity across breeding populations and characterize their wintering distribution, migratory paths, phenology, and migratory behavior. Barometric geolocators (BARP50Z11-7-DIP, Migrate Technology) were deployed on territorial males in the spring / summer of 2021, and recovered in 2022. Tag data was analyzed implementing the [GeoPressureR](https://raphaelnussbaumer.com/GeoPressureManual/index.html) package, which uses weather reanalysis data (ERA5) to match spatio-temporal patterns of atmospheric pressure across the deployment period, as well as altitudinal ranges and a movement model derived from well-defined migratory periods. Our analysis provides accurate and continuous locations throughout each bird's annual cycle, as well as novel flight data.
 
-![Swainson's Warbler with Geolocator (Phil Stouffer)](https://raw.githubusercontent.com/grhyne/SWWA_Pressure/main/reports/SWWA_MainPhoto.JPG)
+![Swainson's Warbler with geolocator (Phil Stouffer)](https://raw.githubusercontent.com/grhyne/SWWA_Pressure/main/reports/SWWA_MainPhoto.JPG)
 
-Each page allows you to explore an individual tag, which can be navigated by breeding region in the top menu bar. For each tag you can find interactive Leaflets and ggplots of the likely and simulated migratory paths, marginal probability heat maps, altitude plots, wind assistance maps, and flight histograms. This code workflow and reports are based on the [GeoPressureTemplate](https://github.com/Rafnuss/GeoPressureTemplate).  
+Each page allows you to explore individual tag data, which can be navigated by breeding region in the top menu bar. For each tag you can find interactive Leaflets and ggplots of the likely and simulated migratory paths, marginal probability heat maps, altitude plots, wind assistance maps, flight histograms, and estimate error histograms. This code workflow and reports are based on the [GeoPressureTemplate](https://github.com/Rafnuss/GeoPressureTemplate).  
 
 ## Tag Data
 
@@ -43,4 +43,4 @@ David Buehler (*University of Tennessee Knoxville, School of Natural Resources*)
 Dawson Rader (*University of Tennessee Knoxville, School of Natural Resources*)  
 Jennifer Tyrrell (*Adudubon South Carolina*)  
 Matthew Johnson (*Audubon South Carolina*)  
-Raphael Nussbaumer (*Cornell Lab of Ornithology*)
+Raphaël Nussbaumer (*Cornell Lab of Ornithology*)
