@@ -12,16 +12,6 @@ library(readxl)
 # Define the report to produce
 report_list <- c("basic_trajectory")
 
-# Update _site._yml with str:
-str <- ""
-for (report in report_list) {
-  str <- paste0(str, '- text: "', report, '"\n  menu:\n')
-  for (gdl in gdl_list) {
-    str <- paste0(str, '   - text: "', gdl, '"\n')
-    str <- paste0(str, '     href: "/SWWA_Pressure/reports/', report, "/", gdl, ".html\n")
-  }
-}
-writeLines(str)
 
 # Generate the following report for each tracks
 # This will produce an HTML file for each reports
@@ -41,6 +31,16 @@ for (report in report_list) {
 # the docs/ folder to be serve on Github easily.
 # Change _site._yml for the overall look of the website and index.Rmd for the content of the homepage
 
+# Update _site._yml with str:
+str <- ""
+for (report in report_list) {
+  str <- paste0(str, '- text: "', report, '"\n  menu:\n')
+  for (gdl in gdl_list) {
+    str <- paste0(str, '   - text: "', gdl, '"\n')
+    str <- paste0(str, '     href: "/SWWA_Pressure/reports/', report, "/", gdl, ".html\n")
+  }
+}
+writeLines(str)
 
 # Render site
 render_site("./reports")
